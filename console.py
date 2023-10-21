@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+""" console of hBnB"""
 from models.base_model import BaseModel
 from models.user import User
 from models.amenity import Amenity
@@ -15,7 +15,6 @@ import re
 class HBNBCommand(cmd.Cmd):
     """Encompasses console functionality."""
 
-    intro = "Interpreter welcomes your input.\n"
     prompt = "(hbnb) "
     classes = {
         "BaseModel": BaseModel,
@@ -33,19 +32,16 @@ class HBNBCommand(cmd.Cmd):
         """
         class_object = line.split(" ")
         if len(line) == 0:
-            print("** class Name is nonexistent.  **")
-            return
+            print("** class name missing **")
         elif class_object[0] not in self.__class__.classes.keys():
-            print("** class doesn't exist  **")
-            return
+            print("** class doesn't exist **")
         elif len(class_object) == 1:
-            print("** instance id is nonexistent.  **")
-            return
+            print("** instance id missing **")
         else:
             key = class_object[0] + "." + class_object[1]
             all_instances = storage.all()
             if key not in all_instances.keys():
-                print("** no instance found.  **")
+                print("** no instance found **")
             else:
                 obj = all_instances[key]
                 print(str(obj))
@@ -53,9 +49,9 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, line):
         """new object Created"""
         if len(line) == 0:
-            print("** Class Name is nonexistent.  **")
+            print("** class name missing **")
         elif line not in self.__class__.classes.keys():
-            print("** Class is nonexistent.  **")
+            print("** class doesn't exist **")
         else:
             obj = self.__class__.classes[line]()
             obj.save()
@@ -65,23 +61,20 @@ class HBNBCommand(cmd.Cmd):
         """attributes of an object Updated"""
         updates = line.split(" ")
         if len(line) == 0:
-            print("** Class Name is nonexistent.  **")
-            return
+            print("** class name missing **")
         elif updates[0] not in __class__.classes.keys():
-            print("** class doesn't exist.  **")
-            return
+            print("** class doesn't exist **")
         elif len(updates) == 1:
-            print("** no instance found.  **")
-            return
+            print("** instance id missing **")
         elif len(updates) == 2:
-            print("** attribute Name is nonexistent.  **")
+            print("** attribute name missing **")
         elif len(updates) == 3:
             print("** value missing **")
         else:
             key = updates[0] + "." + updates[1]
             all_instances = storage.all()
             if key not in all_instances.keys():
-                print("** no instance found **")
+                print("** instance id missing **")
             else:
                 obj = all_instances[key]
                 setattr(obj, updates[2], updates[3])
@@ -95,16 +88,16 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         elif target_list[0] not in self.__class__.classes.keys():
-            print("** class doesn't exist.  **")
+            print("** class doesn't exist **")
             return
         elif len(target_list) == 1:
-            print("** no instance found.  **")
+            print("** instance id missing **")
             return
         else:
             key = target_list[0] + "." + target_list[1]
             all_instances = storage.all()
             if key not in all_instances.keys():
-                print("** no instance found. **")
+                print("** no instance found **")
             else:
                 del all_instances[key]
                 storage.save()
@@ -119,7 +112,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 pass
         except NameError:
-            print("** class doesn't exist. **")
+            print("** class doesn't exist **")
             return
         line.strip()
         for key, val in objs.items():
@@ -139,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
     def do_operations(self, args):
         """Perform actions on objects"""
 
-    def do_EOF(self, arg):
+    def do_EOF(self, args):
         """Manages program exit on EOF"""
         print()
         return True
@@ -176,7 +169,7 @@ class HBNBCommand(cmd.Cmd):
         return False
 
     def do_quit(self, args):
-        """Exits the interpreter"""
+        """Quit command to exit the program\n"""
         raise SystemExit
 
 
